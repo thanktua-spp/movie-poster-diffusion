@@ -1,6 +1,7 @@
 from ipywidgets.widgets.interaction import Dropdown
 import gradio as gr
 import torch
+import os
 from diffusers import StableDiffusionPipeline
 
 #from huggingface_hub import notebook_login
