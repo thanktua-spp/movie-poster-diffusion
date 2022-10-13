@@ -26,8 +26,8 @@ def improve_image(img):
 def generate(celebrity, setting):
   prompt = 'A movie potrait of' + celebrity + 'sterring in' + setting
   image = pipe(prompt,
-              guidance_scale=20, 
-              num_inference_steps=100,
+              guidance_scale=2, 
+              num_inference_steps=50,
               latents=latents1).images[0]
   image = improve_image(image)
   image = gr.processing_utils.decode_base64_to_image(image['data'][0])
