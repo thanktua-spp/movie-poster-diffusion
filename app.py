@@ -40,7 +40,7 @@ article = """
 gr.Interface(
   fn=generate,
   inputs=[gr.Textbox(),
-          gr.Dropdown(['terminator', 
+          Dropdown(['terminator', 
                        'matrix',
                        'Gladiator',
                        'The Godfather',
