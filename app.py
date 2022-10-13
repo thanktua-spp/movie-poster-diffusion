@@ -3,6 +3,9 @@ import gradio as gr
 import torch
 from diffusers import StableDiffusionPipeline
 
+from huggingface_hub import notebook_login
+notebook_login()
+
 pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
 pipe = pipe.to("cuda") 
 
