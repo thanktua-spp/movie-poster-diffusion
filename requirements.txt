@@ -2,3 +2,4 @@ torch
 diffusers
 ipywidgets
 transformers
+gradio==3.4.1
