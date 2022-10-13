@@ -3,8 +3,8 @@ import gradio as gr
 import torch
 from diffusers import StableDiffusionPipeline
 
-from huggingface_hub import notebook_login
-notebook_login()
+#from huggingface_hub import notebook_login
+#notebook_login()
 
 pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
 pipe = pipe.to("cuda") 
@@ -17,7 +17,7 @@ print(f"The seed for this generator is: {seed}")
 latents1 = torch.randn(1,4,64,64)
 
 def improve_image(img):
-  url = 'https://hf.space/embed/NotFungibleIO/GFPGAN/+/api/predict'
+  url = 'https://hf.space/embed/abidlabs/GFPGAN/+/api/predict'
   request_objt = {
       "data":[gr.processing_utils.encode_pil_to_base64(img),'v1.3',20]}
   return requests.post(url, json=request_objt).json()
