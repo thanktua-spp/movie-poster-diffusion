@@ -33,7 +33,7 @@ def generate(celebrity, setting):
   image = gr.processing_utils.decode_base64_to_image(image['data'][0])
   return image
 
-title="Face-id Application Demo"
+title="🖼️Movie poster Generator (Diffusion Model) Demo"
 description = "Upload similar/different images to compare Image similarity for face-id demo"
 article = """
             - Select an image from the examples provided as demo image
