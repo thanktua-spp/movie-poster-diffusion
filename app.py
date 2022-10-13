@@ -6,7 +6,8 @@ from diffusers import StableDiffusionPipeline
 #from huggingface_hub import notebook_login
 #notebook_login()
 
-pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
+auth_token = os.environ.get("auth_token")
+pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=True)
 pipe = pipe.to("cuda") 
 
 device = "cuda"
