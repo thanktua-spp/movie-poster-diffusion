@@ -43,14 +43,15 @@ article = """
 
 gr.Interface(
   fn=generate,
-  inputs=[[gr.Textbox(),
-          Dropdown(['terminator', 
-                       'matrix',
-                       'Gladiator',
-                       'The Godfather',
-                       'The Dark Knight',
-                       'The Lord of the Rings',
-                       'Star Wars'])]],
+  inputs=[gr.Textbox(),
+          Dropdown(choices=['terminator', 
+                           'matrix',
+                           'Gladiator',
+                           'The Godfather',
+                           'The Dark Knight',
+                           'The Lord of the Rings',
+                           'Star Wars'])
+          ],
   outputs='image',
   title=title,
   description=description,
