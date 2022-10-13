@@ -1,5 +1,3 @@
-# movie-poster-diffusion
-
 ---
 title: movie-poster-diffusion
 emoji: 🖼️
