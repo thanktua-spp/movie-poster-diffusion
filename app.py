@@ -6,7 +6,7 @@ from diffusers import StableDiffusionPipeline
 
 
 auth_token = os.environ.get("auth_token")
-pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=True)
+pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=auth_token)
 pipe = pipe.to("cuda") 
 
 device = "cuda"
