@@ -6,8 +6,9 @@ from diffusers import StableDiffusionPipeline
 
 
 auth_token = os.environ.get("auth_token")
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=auth_token)
-pipe = pipe.to("cuda") 
+pipe = pipe.to(device) 
 
 device = "cuda"
 generator = torch.Generator(device=device)
