@@ -5,13 +5,14 @@ import os
 from diffusers import StableDiffusionPipeline
 import base64
 import io
+import requests
+
 
 auth_token = os.environ.get("auth_token")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", use_auth_token=auth_token)
 pipe = pipe.to(device) 
 
-device = "cuda"
 generator = torch.Generator(device=device)
 seed = generator.seed()
 print(f"The seed for this generator is: {seed}")
@@ -26,43 +27,44 @@ def convert_image_2string(image):
   base64_str = base64_bytes.decode("ascii")
   return base64_str
 
-def improve_image(img):
-  url = 'https://hf.space/embed/abidlabs/GFPGAN/+/api/predict'
+def improve_image(image):
+  url1 = 'https://hf.space/embed/NotFungibleIO/GFPGAN/+/api/predict'
+  url2 = 'https://hf.space/embed/abidlabs/GFPGAN/+/api/predict'
   request_objt = {
-      "data":[convert_image_2string(img),'v1.3',20]}
-  return requests.post(url, json=request_objt).json()
+      "data":[f'image/jpeg;base64,{convert_image_2string(image)}',2]}
+  return requests.post(url2, json=request_objt).json()
 
 def generate(celebrity, setting):
-  prompt = 'A movie potrait of' + celebrity + 'sterring in' + setting
+  prompt = f'A movie poster of {celebrity} in {setting},photorealistic, 4k High Definition by magali villeneuve, jeremy lipkin and michael garmash style' 
+  #'A movie potrait of' + celebrity + 'sterring in' + setting
   image = pipe(prompt,
-              guidance_scale=2, 
-              num_inference_steps=50,
+              guidance_scale=20, 
+              num_inference_steps=100,
               latents=latents1).images[0]
   image = improve_image(image)
   image = gr.processing_utils.decode_base64_to_image(image['data'][0])
   return image
 
 title="🖼️Movie poster Generator (Diffusion Model) Demo"
-description = "Upload similar/different images to compare Image similarity for face-id demo"
+description = "Generate amazing photo realistic images of your favourite movie\
+ characters starring in movies that did not exist"
 article = """
-            - Select an image from the examples provided as demo image
-            - Click submit button to make Image classification
-            - Click clear button to try new Image for classification
+            - Enter the name of your preffered movie character
+            - Also select a movie from the posible list of options.
           """
 
 gr.Interface(
   fn=generate,
-  inputs=[gr.Textbox(),
-          gr.Dropdown(['terminator', 
-                     'matrix',
+  inputs=[gr.Textbox(value='Will Smith'),
+          gr.Dropdown(['matrix',
                      'Gladiator',
                      'The Godfather',
                      'The Dark Knight',
                      'The Lord of the Rings',
-                     'Star Wars'])
+                     'Star Wars'], value='The Godfather')
           ],
   outputs='image',
   title=title,
   description=description,
   article=article
-).launch()
+).launch(debug=True)
