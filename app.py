@@ -3,7 +3,8 @@ import gradio as gr
 import torch
 import os
 from diffusers import StableDiffusionPipeline
-
+import base64
+import io
 
 auth_token = os.environ.get("auth_token")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -17,10 +18,18 @@ print(f"The seed for this generator is: {seed}")
 
 latents1 = torch.randn(1,4,64,64)
 
+def convert_image_2string(image):
+  out_buffer  = io.BytesIO()
+  image.save(out_buffer, format="PNG")
+  out_buffer .seek(0)
+  base64_bytes = base64.b64encode(out_buffer .read())
+  base64_str = base64_bytes.decode("ascii")
+  return base64_str
+
 def improve_image(img):
   url = 'https://hf.space/embed/abidlabs/GFPGAN/+/api/predict'
   request_objt = {
-      "data":[gr.processing_utils.encode_pil_to_base64(img),'v1.3',20]}
+      "data":[convert_image_2string(img),'v1.3',20]}
   return requests.post(url, json=request_objt).json()
 
 def generate(celebrity, setting):
