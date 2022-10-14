@@ -36,8 +36,13 @@ def improve_image(image):
       "data":[f'image/jpeg;base64,{convert_image_2string(image)}',2]}
   return requests.post(url2, json=request_objt).json()
 
-def generate(celebrity, setting):
-  prompt = f'A movie poster of {celebrity} in {setting}, photorealistic, face portrait, 4k High Definition, movie title text as {setting}, by magali villeneuve, jeremy lipkin and michael garmash style' 
+def generate(celebrity, setting_list_option, setting_text):
+  movie_setting = setting_list_option
+  if setting_list_option == 'None':
+    movie_setting = setting_text
+    return movie_setting
+  
+  prompt = f'Movie poster of {celebrity} in {movie_setting} with title caption, surreal, photorealistic, portrait, 4k High Definition' 
   #'A movie potrait of' + celebrity + 'sterring in' + setting
   image = pipe(prompt,
               guidance_scale=10, 
@@ -58,14 +63,18 @@ article = """
 gr.Interface(
   fn=generate,
   inputs=[gr.Textbox(label='Enter name of Movie Celebrity', value='Will Smith'),
-          gr.Dropdown(label='Select your favourite Movie',
-                      choices=['matrix',
+          gr.Dropdown(label='Select from possible Movie Choices',
+                      choices=['The matrix',
                                'Gladiator',
                                'The Godfather',
                                'The Dark Knight',
                                'The Lord of the Rings',
-                               'Star Wars'],
-                      value='The Godfather')
+                               'Star Wars',
+                               'John Wick',
+                               'Harry Potter',
+                               'The Game of thrones',
+                               'Avengers End Game']),
+          gr.Textbox(label='Dont like movie recommendations? Write yours instead', value='Star Wars')
           ],
   allow_flagging="manual",
   flagging_options=["Poor Image Quality", "Wrong Movie Artist"],
@@ -74,4 +83,4 @@ gr.Interface(
   title=title,
   description=description,
   article=article
-).launch(debug=True)
+).launch()
