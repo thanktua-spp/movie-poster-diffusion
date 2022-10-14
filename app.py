@@ -45,8 +45,8 @@ def generate(celebrity, setting_list_option, setting_text):
   prompt = f'Movie poster of {celebrity} in {movie_setting} with title caption, surreal, photorealistic, portrait, 4k High Definition' 
   #'A movie potrait of' + celebrity + 'sterring in' + setting
   image = pipe(prompt,
-              guidance_scale=10, 
-              num_inference_steps=50,
+              guidance_scale=20, 
+              num_inference_steps=100,
               latents=latents1).images[0]
   image = improve_image(image)
   image = gr.processing_utils.decode_base64_to_image(image['data'][0])
