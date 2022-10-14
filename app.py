@@ -7,6 +7,8 @@ import base64
 import io
 import requests
 
+HF_TOKEN = os.getenv('HF_TOKEN')
+hf_writer = gr.HuggingFaceDatasetSaver(HF_TOKEN, "crowdsourced-movie-poster-diffusion")
 
 auth_token = os.environ.get("auth_token")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -55,14 +57,19 @@ article = """
 
 gr.Interface(
   fn=generate,
-  inputs=[gr.Textbox(value='Will Smith'),
-          gr.Dropdown(['matrix',
-                     'Gladiator',
-                     'The Godfather',
-                     'The Dark Knight',
-                     'The Lord of the Rings',
-                     'Star Wars'], value='The Godfather')
+  inputs=[gr.Textbox(label='Enter name of Movie Celebrity', value='Will Smith'),
+          gr.Dropdown(label='Select your favourite Movie',
+                      choices=['matrix',
+                               'Gladiator',
+                               'The Godfather',
+                               'The Dark Knight',
+                               'The Lord of the Rings',
+                               'Star Wars'],
+                      value='The Godfather')
           ],
+  allow_flagging="manual",
+  flagging_options=["Poor Image Quality", "Wrong Movie Artist"],
+  flagging_callback=hf_writer,
   outputs='image',
   title=title,
   description=description,
