@@ -37,11 +37,11 @@ def improve_image(image):
   return requests.post(url2, json=request_objt).json()
 
 def generate(celebrity, setting):
-  prompt = f'A movie poster of {celebrity} in {setting}, photorealistic, face portrait, 4k High Definition, add {setting} as movie title text below, by magali villeneuve, jeremy lipkin and michael garmash style' 
+  prompt = f'A movie poster of {celebrity} in {setting}, photorealistic, face portrait, 4k High Definition, movie title text as {setting}, by magali villeneuve, jeremy lipkin and michael garmash style' 
   #'A movie potrait of' + celebrity + 'sterring in' + setting
   image = pipe(prompt,
-              guidance_scale=20, 
-              num_inference_steps=100,
+              guidance_scale=10, 
+              num_inference_steps=50,
               latents=latents1).images[0]
   image = improve_image(image)
   image = gr.processing_utils.decode_base64_to_image(image['data'][0])
